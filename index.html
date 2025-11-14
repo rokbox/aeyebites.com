@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aeyebites – Prism Genesis Collection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Aeyebites – Prism Genesis Collection. Neon-cute pixel spirits from the glitch between worlds, minted on-chain. Official website: www.aeyebites.com."
+  />
+  <style>
+    :root {
+      --bg: #050712;
+      --bg-alt: #0b0f1e;
+      --accent: #f3c96a;
+      --accent-soft: rgba(243, 201, 106, 0.12);
+      --text: #f7f7ff;
+      --muted: #a9adc4;
+      --border: #22263b;
+      --card-radius: 16px;
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1a1440 0, #050712 52%, #020308 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    .logo-text {
+      font-size: 1.2rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(123, 97, 255, 0.08);
+      border: 1px solid rgba(123, 97, 255, 0.35);
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .hero-badge span {
+      font-size: 0.85rem;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 4vw, 2.8rem);
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease,
+        border-color 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f3c96a, #ff9f7b);
+      color: #1a1024;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-outline {
+      border-color: rgba(247, 247, 255, 0.35);
+      color: var(--text);
+      background: rgba(5, 7, 18, 0.6);
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 20, 45, 0.9);
+    }
+
+    .hero-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-meta strong {
+      color: var(--accent);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 28px;
+      margin-top: 24px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top, #141733 0, #080a18 50%, #050712 100%);
+      border-radius: var(--card-radius);
+      padding: 18px 18px 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2,
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.96rem;
+      color: #d5d8f3;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .preview-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px dashed rgba(243, 201, 106, 0.45);
+      background: radial-gradient(circle at top left, rgba(243, 201, 106, 0.15), transparent),
+                  radial-gradient(circle at bottom right, rgba(123, 97, 255, 0.22), transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0; /* remove extra padding so the canvas can take full space */
+    }   
+
+    #prism-grid-canvas {
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated; /* makes the blocky look sharper */
+      display: block;
+    }
+
+    /* Visually hidden but accessible text */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+
+    section {
+      margin-bottom: 26px;
+    }
+
+    section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+
+    section p {
+      font-size: 0.96rem;
+      color: #d5d8f3;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    ul {
+      list-style: none;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    ul li::before {
+      content: "•";
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    ul li {
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+      color: #d5d8f3;
+    }
+
+    .roadmap-phase {
+      margin-bottom: 10px;
+    }
+
+    .roadmap-phase-title {
+      font-weight: 600;
+      font-size: 0.98rem;
+      margin-bottom: 2px;
+      color: var(--accent);
+    }
+
+    .links-list a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .links-list a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .preview-box {
+        height: 180px;
+      }
+
+      .page {
+        padding: 22px 16px 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-text">Aeyebites • Prism Genesis</div>
+      <div class="hero-badge">
+        <span>🌀</span>
+        <span>Soft Launch • Art-First Collection</span>
+      </div>
+      <h1>Aeyebites – Prism Genesis Collection</h1>
+      <p class="hero-subtitle">
+        Neon-cute pixel spirits from the glitch between worlds — befriend the bytes that peek back.
+      </p>
+
+      <div class="hero-actions">
+        <a
+          class="btn btn-primary"
+          href="https://opensea.io/collection/your-aeyebites-collection-slug"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on OpenSea
+        </a>
+        <a class="btn btn-outline" href="#roadmap">View Roadmap</a>
+      </div>
+
+      <div class="hero-meta">
+        On-chain identity: <strong>aeyebites.eth</strong> · Minting on Ethereum via OpenSea
+      </div>
+    </header>
+
+    <div class="layout">
+      <div class="card">
+        <div class="tagline">About the Project</div>
+        <h2>What Are Aeyebites?</h2>
+        <p>
+          Aeyebites are tiny, curious pixel spirits who slip through cracks in the digital prism.
+          Each one is a hand-crafted, neon-lit character with its own vibe, quirks, and secrets.
+          The <strong>Prism Genesis Collection</strong> is the first wave of Aeyebites ever
+          recorded on-chain — a foundation for future stories, games, and weird little adventures.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="tagline">Collection Preview</div>
+        <h3>Prism Genesis: Wave One</h3>
+        <p>
+          The first wave focuses on core “species” of Aeyebites — explorers, troublemakers, and
+          guardians of the Prism Grid. Expect bright neon palettes, layered pixel traits, and rare
+          anomalies that hint at deeper lore.
+        </p>
+        <div class="preview-box">
+          <canvas id="prism-grid-canvas"></canvas>
+          <div class="sr-only">Animated pixel grid teaser: PRISM GRID WARMING UP…</div>
+        </div>
+      </div>
+    </div>
+
+    <section id="lore">
+      <h2>Lore Snapshot</h2>
+      <p>
+        Somewhere between old arcade machines, broken headsets, and cloud storage full of forgotten
+        screenshots, a strange prism began to flicker. Inside that prism, loose pixels, corrupted
+        icons, and lost UI bits fused into curious little creatures — Aeyebites.
+      </p>
+      <p>
+        Some Aeyebites guard old save files. Some snack on error messages. Some just want to hang
+        out on your screen and vibe in the glow. The Prism Genesis Collection captures the first
+        time these creatures were stable enough to step onto the blockchain. What happens next is up
+        to the community that collects them.
+      </p>
+    </section>
+
+    <section id="chronicles">
+      <h2>Chronicles Teaser: “The Prism Stirs”</h2>
+      <p>
+        Deep in the Prism Grid, something is shifting. When the first Aeyebites crossed...
+      </p>
+      <p>
+        Whispers ripple through the neon corridors: “The Shard Lights are waking.”...
+      </p>
+      <p>
+        This is only the first page. Stay tuned at <strong>Aeyebites.com</strong> — the Chronicles open soon.
+      </p>
+    </section>
+
+    <section id="features">
+      <h2>Collection Features</h2>
+      <ul>
+        <li>🧬 1-of-1 unique pixel artwork in a neon, cyber-cute style</li>
+        <li>🎭 Playful traits, moods, and glitch quirks</li>
+        <li>🌈 Candy-neon palettes with cozy cyberpunk vibes</li>
+        <li>🌪 Rare anomaly traits hinting at future arcs and drops</li>
+        <li>🔐 Provenance from the Aeyebites creator wallet</li>
+      </ul>
+      <p class="muted">
+        Each Aeyebite is treated as a character, not just a random trait combo — designed for story,
+        memes, and future experiments.
+      </p>
+    </section>
+
+    <section id="roadmap">
+      <h2>Roadmap: Soft Launch Edition</h2>
+
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-title">Phase 1 – Genesis & Setup</div>
+        <p class="muted">
+          Launch the Prism Genesis collection on OpenSea (lazy mint), connect aeyebites.eth to
+          official links, and establish this starter site and profiles.
+        </p>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-title">Phase 2 – Lore & Community</div>
+        <p class="muted">
+          Release short “lore bites” for key Aeyebites, share sneak peeks and polls, and gather
+          feedback on which characters should star in future stories.
+        </p>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="roadmap-phase-title">Phase 3 – Expansion & Experiments</div>
+        <p class="muted">
+          Explore longer-form Chronicles on the website, potential mini-drops or collabs, and fun
+          digital perks or small holder-only goodies.
+        </p>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ — Frequently Asked Questions</h2>
+
+      <h3>What are Aeyebites?</h3>
+      <p>Aeyebites are neon-cute pixel spirits born from the Prism Grid…</p>
+
+      <h3>How many will be in the Prism Genesis Collection?</h3>
+      <p>This is a curated soft-launch wave…</p>
+
+      <h3>How do I mint?</h3>
+      <p>You can mint directly on OpenSea using lazy mint…</p>
+
+      <h3>Is there a roadmap?</h3>
+      <p>Aeyebites is art-first and lore-first, with a soft roadmap…</p>
+
+      <h3>Is this project doxxed?</h3>
+      <p>The creator wallet and ENS (aeyebites.eth) provide on-chain provenance…</p>
+
+      <h3>Will there be future drops?</h3>
+      <p>Yes, but small and curated — nothing hype-driven…</p>
+
+      <h3>Are traits randomly generated?</h3>
+      <p>No. Every Aeyebite is individually crafted…</p>
+    </section>
+
+    <section id="links">
+      <h2>Official Links</h2>
+      <p class="muted">Only trust links listed here or on <strong>aeyebites.eth</strong>.</p>
+      <ul class="links-list">
+        <li>
+          🌐 Website:
+          <a href="https://www.aeyebites.com" target="_blank" rel="noopener noreferrer">
+            https://www.aeyebites.com
+          </a>
+        </li>
+        <li>🧿 ENS: <strong>aeyebites.eth</strong></li>
+        <li>
+          🖼️ OpenSea Collection:
+          <a
+            href="https://opensea.io/collection/your-aeyebites-collection-slug"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            https://opensea.io/collection/your-aeyebites-collection-slug
+          </a>
+        </li>
+        <li>
+          🐦 Social:
+          <a href="https://x.com/aeyebites" target="_blank" rel="noopener noreferrer">
+            @aeyebites
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section id="creator">
+      <h2>From the Creator</h2>
+      <p>
+        Aeyebites started as a “what if?” — what if cute pixel creatures popped out of glitchy
+        screens and browser tabs and just… stuck around? This project is a blend of cozy art, neon
+        cyber vibes, and playful storytelling, built slowly and intentionally.
+      </p>
+      <p class="muted">
+        If you’re early here: thanks for scrolling this far. The goal is art, lore, and good vibes
+        first — hype second.
+      </p>
+    </section>
+
+    <footer>
+      <div>© Aeyebites – Prism Genesis. All rights reserved.</div>
+      <div>On-chain identity: aeyebites.eth</div>
+    </footer>
+  </div>
+
+<script>
+  (function () {
+    const canvas = document.getElementById("prism-grid-canvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    // Darker neon Aeyebites-style palette
+    const palette = [
+      "#1e1b33", // deep indigo
+      "#2a2348", // dark violet navy
+      "#372c5c", // muted violet
+      "#43326f", // deeper prism purple
+      "#523a88", // neon-muted purple
+      "#264d5a", // deep teal
+      "#3f2258"  // dark magenta shadow
+    ];
+
+    let cellSize = 10; // bigger pixels for a darker feel
+    let cols = 0;
+    let rows = 0;
+    let lastResize = 0;
+
+    function resizeCanvas() {
+      const box = canvas.parentElement;
+      if (!box) return;
+
+      const width = box.clientWidth;
+      const height = box.clientHeight || 220; // fallback height
+
+      canvas.width = width;
+      canvas.height = height;
+
+      cols = Math.floor(width / cellSize);
+      rows = Math.floor(height / cellSize);
+    }
+
+    function drawRandomPixels() {
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const color = palette[Math.floor(Math.random() * palette.length)];
+          ctx.fillStyle = color;
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        }
+      }
+
+      // Add a subtle dark overlay for mood
+      ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawTextFrame() {
+      drawRandomPixels();
+
+      // Neon cyan text with glow
+      ctx.fillStyle = "#4be4ff";
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 12;
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const baseFontSize = Math.max(10, Math.floor(canvas.height / 18));
+      ctx.font = `bold ${baseFontSize}px "SF Mono", Menlo, monospace`;
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      ctx.fillText("PRISM GRID", centerX, centerY - baseFontSize * 0.7);
+      ctx.fillText("WARMING UP…", centerX, centerY + baseFontSize * 0.7);
+
+      ctx.shadowBlur = 0;
+    }
+
+    function drawAnomalyFrame() {
+      // More aggressive background: quicker noisy pixels
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          // Slightly brighter anomaly palette (just mix in some hot colors)
+          const anomalyPalette = [
+            "#ff2c75",
+            "#ff9f7b",
+            "#f3c96a",
+            "#7b61ff",
+            "#1e1b33",
+            "#2a2348"
+          ];
+          const color = anomalyPalette[Math.floor(Math.random() * anomalyPalette.length)];
+          ctx.fillStyle = color;
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        }
+      }
+
+      ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Anomaly text: bright magenta with stronger glow
+      ctx.fillStyle = "#ff6fd8";
+      ctx.shadowColor = ctx.fillStyle;
+      ctx.shadowBlur = 16;
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      const baseFontSize = Math.max(10, Math.floor(canvas.height / 16));
+      ctx.font = `bold ${baseFontSize}px "SF Mono", Menlo, monospace`;
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+
+      ctx.fillText("ANOMALY DETECTED", centerX, centerY);
+
+      ctx.shadowBlur = 0;
+    }
+
+    let lastModeSwitch = 0;
+    let inTextMode = false;
+    let lastPixelUpdate = 0;
+    let pixelInterval = 180; // ms between pixel refresh (slower, calmer)
+
+    // Anomaly state
+    let anomalyActive = false;
+    let anomalyStart = 0;
+    const anomalyDuration = 1400; // ms anomaly stays on screen
+    let lastAnomalyTime = 0;
+    const anomalyCooldown = 15000; // at least 15s between anomalies
+
+    function animate(timestamp) {
+      if (!lastModeSwitch) lastModeSwitch = timestamp;
+      if (!lastPixelUpdate) lastPixelUpdate = timestamp;
+      if (!lastAnomalyTime) lastAnomalyTime = timestamp;
+
+      // Handle anomaly mode first (it overrides everything)
+      if (anomalyActive) {
+        if (timestamp - anomalyStart < anomalyDuration) {
+          drawAnomalyFrame();
+          requestAnimationFrame(animate);
+          return;
+        } else {
+          anomalyActive = false;
+        }
+      } else {
+        // Decide if we should trigger a rare anomaly
+        const sinceLastAnomaly = timestamp - lastAnomalyTime;
+        if (sinceLastAnomaly > anomalyCooldown) {
+          // Very small chance each frame after cooldown
+          if (Math.random() < 0.003) { // tweak this for more/less rarity
+            anomalyActive = true;
+            anomalyStart = timestamp;
+            lastAnomalyTime = timestamp;
+            drawAnomalyFrame();
+            requestAnimationFrame(animate);
+            return;
+          }
+        }
+      }
+
+      const elapsed = timestamp - lastModeSwitch;
+
+      // Normal mode switching: pixels <-> text
+      if (!inTextMode && elapsed > 3500) {
+        // ~3.5s of pixel animation
+        inTextMode = true;
+        lastModeSwitch = timestamp;
+      } else if (inTextMode && elapsed > 1300) {
+        // ~1.3s of text
+        inTextMode = false;
+        lastModeSwitch = timestamp;
+      }
+
+      if (inTextMode) {
+        drawTextFrame();
+      } else {
+        // Only redraw pixels every pixelInterval ms
+        if (timestamp - lastPixelUpdate > pixelInterval) {
+          drawRandomPixels();
+          lastPixelUpdate = timestamp;
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    function init() {
+      resizeCanvas();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("resize", () => {
+      const now = Date.now();
+      if (now - lastResize > 150) {
+        lastResize = now;
+        resizeCanvas();
+      }
+    });
+
+    window.addEventListener("load", init);
+    setTimeout(init, 200);
+  })();
+</script>
+
+</body>
+</html>
+
