@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block internal Studio workspace
+Disallow: /studio/
+
+Sitemap: https://aeyebites.com/sitemap.xml
